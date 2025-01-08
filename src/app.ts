@@ -2,8 +2,8 @@ import { question } from "readline-sync";
 import { ANSWERS } from "./answers";
 import { QUESTIONS } from "./questions";
 
+// error: Parameter 'questionText' implicitly has an 'any' type. Fix: added ' : string' in line 6.
 const getAnswer = (questionText: string): boolean => {
-	// error: Parameter 'questionText' implicitly has an 'any' type. Fix: added ' : string' in line 5.
 	const userAnswer = question("- " + questionText);
 	if (userAnswer === "true") return true;
 	if (userAnswer === "false") return false;
@@ -21,11 +21,18 @@ const getAllAnswers = () => {
 	return answers;
 };
 
-const checkAllAnswers = (userAnswers) => {
-	return userAnswers.every((answer, i) => checkAnswer(i, answer));
+// error: Parameter 'userAnswers' implicitly has an 'any' type. Fix: added ' : boolean' in line 25.
+const checkAllAnswers = (userAnswers: boolean[]) => {
+	// error: Property 'every' does not exist on type 'string'. Fix: furter added ' : boolean[]' in line 25.
+	// error: Parameter 'answer' implicitly has an 'any' type. Fix: added ' : boolean' in line 29.
+	// error: Parameter 'i' implicitly has an 'any' type. Fix; added ' : number' in line 29.
+	return userAnswers.every((answer: boolean, i: number) =>
+		// error: Argument of type 'number' is not assignable to parameter of type 'boolean'. Fix: I inverted (question: number, answer: boolean) in line 35.
+		checkAnswer(i, answer)
+	);
 };
 
-const checkAnswer = (answer: boolean, question: number): boolean => {
+const checkAnswer = (question: number, answer: boolean): boolean => {
 	const correctAnswer = ANSWERS[question];
 	if (correctAnswer === undefined) {
 		throw new Error(`No answer at index ${question} found`);
